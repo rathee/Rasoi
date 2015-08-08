@@ -8,4 +8,7 @@
     <string name="btn_profile_update">Profile Update</string>
     <string name="btn_order">Order</string>
     <string name="btn_history">History</string>
+    <string name="title_activity_order">Order</string>
+    <string name="title_activity_profile_update">ProfileUpdate</string>
+    <string name="title_activity_history">History</string>
 </resources>

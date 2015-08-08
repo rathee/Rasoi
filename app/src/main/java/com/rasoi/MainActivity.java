@@ -252,7 +252,10 @@ public class MainActivity extends Activity implements OnClickListener,
                 signOutFromGplus();
                 break;
             case R.id.btn_profile_update :
-                ProfileUpdate profileUpdate = new ProfileUpdate();
+                Intent intent = new Intent(getApplicationContext(), ProfileUpdate.class);
+                intent.putExtra("name", txtName.getText());
+                intent.putExtra("email", txtEmail.getText());
+                startActivity(intent);
                 break;
             case R.id.btn_order :
                 Order order = new Order();
