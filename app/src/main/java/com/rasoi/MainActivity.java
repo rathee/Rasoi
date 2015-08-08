@@ -54,7 +54,7 @@ public class MainActivity extends Activity implements OnClickListener,
     private ConnectionResult mConnectionResult;
 
     private SignInButton btnSignIn;
-    private Button btnSignOut, btnRevokeAccess;
+    private Button btnSignOut, btnProfileUpdate, btnOrder, btnHistory;
     private ImageView imgProfilePic;
     private TextView txtName, txtEmail;
     private LinearLayout llProfileLayout;
@@ -66,7 +66,9 @@ public class MainActivity extends Activity implements OnClickListener,
 
         btnSignIn = (SignInButton) findViewById(R.id.btn_sign_in);
         btnSignOut = (Button) findViewById(R.id.btn_sign_out);
-        btnRevokeAccess = (Button) findViewById(R.id.btn_revoke_access);
+        btnProfileUpdate = (Button) findViewById(R.id.btn_profile_update);
+        btnOrder = (Button) findViewById(R.id.btn_order);
+        btnHistory = (Button) findViewById(R.id.btn_history);
         imgProfilePic = (ImageView) findViewById(R.id.imgProfilePic);
         txtName = (TextView) findViewById(R.id.txtName);
         txtEmail = (TextView) findViewById(R.id.txtEmail);
@@ -75,7 +77,9 @@ public class MainActivity extends Activity implements OnClickListener,
         // Button click listeners
         btnSignIn.setOnClickListener(this);
         btnSignOut.setOnClickListener(this);
-        btnRevokeAccess.setOnClickListener(this);
+        btnProfileUpdate.setOnClickListener(this);
+        btnOrder.setOnClickListener(this);
+        btnHistory.setOnClickListener(this);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -168,13 +172,17 @@ public class MainActivity extends Activity implements OnClickListener,
         if (isSignedIn) {
             btnSignIn.setVisibility(View.GONE);
             btnSignOut.setVisibility(View.VISIBLE);
-            btnRevokeAccess.setVisibility(View.VISIBLE);
+            btnProfileUpdate.setVisibility(View.VISIBLE);
+            btnOrder.setVisibility(View.VISIBLE);
+            btnHistory.setVisibility(View.VISIBLE);
             llProfileLayout.setVisibility(View.VISIBLE);
         } else {
             btnSignIn.setVisibility(View.VISIBLE);
             btnSignOut.setVisibility(View.GONE);
-            btnRevokeAccess.setVisibility(View.GONE);
             llProfileLayout.setVisibility(View.GONE);
+            btnProfileUpdate.setVisibility(View.GONE);
+            btnOrder.setVisibility(View.GONE);
+            btnHistory.setVisibility(View.GONE);
         }
     }
 
@@ -243,9 +251,14 @@ public class MainActivity extends Activity implements OnClickListener,
                 // Signout button clicked
                 signOutFromGplus();
                 break;
-            case R.id.btn_revoke_access:
-                // Revoke access button clicked
-                revokeGplusAccess();
+            case R.id.btn_profile_update :
+                ProfileUpdate profileUpdate = new ProfileUpdate();
+                break;
+            case R.id.btn_order :
+                Order order = new Order();
+                break;
+            case R.id.btn_history :
+                History history = new History();
                 break;
         }
     }
@@ -269,25 +282,6 @@ public class MainActivity extends Activity implements OnClickListener,
             mGoogleApiClient.disconnect();
             mGoogleApiClient.connect();
             updateUI(false);
-        }
-    }
-
-    /**
-     * Revoking access from google
-     * */
-    private void revokeGplusAccess() {
-        if (mGoogleApiClient.isConnected()) {
-            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-            Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient)
-                    .setResultCallback(new ResultCallback<Status>() {
-                        @Override
-                        public void onResult(Status arg0) {
-                            Log.e(TAG, "User access revoked!");
-                            mGoogleApiClient.connect();
-                            updateUI(false);
-                        }
-
-                    });
         }
     }
 
